@@ -79,6 +79,7 @@ async function main() {
             pricePerKg: 55,
             availableQuantity: 500,
             imageUrl: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=600',
+            category: 'Crop',
             isOrganic: true,
             farmerId: farmer.id
         },
@@ -88,6 +89,7 @@ async function main() {
             pricePerKg: 40,
             availableQuantity: 120,
             imageUrl: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=600',
+            category: 'Vegetable',
             isOrganic: true,
             farmerId: farmer.id
         },
@@ -97,6 +99,7 @@ async function main() {
             pricePerKg: 250,
             availableQuantity: 50,
             imageUrl: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&q=80&w=600',
+            category: 'Crop',
             isOrganic: true,
             farmerId: farmer.id
         },
@@ -106,15 +109,17 @@ async function main() {
             pricePerKg: 150,
             availableQuantity: 200,
             imageUrl: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&q=80&w=600',
+            category: 'Fruit',
             isOrganic: false,
             farmerId: farmer.id
         },
         {
             name: 'Organic Cotton Seeds (Bt II)',
             description: 'High yield potential, resistant to bollworms. Pack of 450g.',
-            pricePerKg: 750, // Per pack technically
+            pricePerKg: 750,
             availableQuantity: 100,
             imageUrl: 'https://images.unsplash.com/photo-1471193945509-9adadd09e587?auto=format&fit=crop&q=80&w=600',
+            category: 'Crop',
             isOrganic: true,
             farmerId: farmer.id
         },
@@ -124,15 +129,17 @@ async function main() {
             pricePerKg: 15,
             availableQuantity: 1000,
             imageUrl: 'https://images.unsplash.com/photo-1628519592415-385ee92e5976?auto=format&fit=crop&q=80&w=600',
+            category: 'Pesticide',
             isOrganic: true,
             farmerId: farmer.id
         },
         {
             name: 'Neem Oil (Pest Repellent)',
             description: 'Pure cold-pressed neem oil for organic pest control.',
-            pricePerKg: 350, // Per liter
+            pricePerKg: 350,
             availableQuantity: 50,
             imageUrl: 'https://images.unsplash.com/photo-1615484477778-ca3b77940c25?auto=format&fit=crop&q=80&w=600',
+            category: 'Pesticide',
             isOrganic: true,
             farmerId: farmer.id
         },
@@ -142,6 +149,7 @@ async function main() {
             pricePerKg: 35,
             availableQuantity: 300,
             imageUrl: 'https://images.unsplash.com/photo-1603833665858-e61d17a86224?auto=format&fit=crop&q=80&w=600',
+            category: 'Fruit',
             isOrganic: true,
             farmerId: farmer.id
         }
