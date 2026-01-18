@@ -48,6 +48,39 @@ router.get('/products', async (req, res) => {
     }
 });
 
+// Get all farmers
+router.get('/farmers', async (req, res) => {
+    try {
+        const farmers = await prisma.user.findMany({
+            where: {
+                role: 'farmer'
+            },
+            include: {
+                products: {
+                    take: 5
+                },
+                _count: {
+                    select: { products: true }
+                }
+            }
+        });
+
+        // Format for frontend
+        const formattedFarmers = farmers.map(f => ({
+            id: f.id,
+            fullName: f.fullName,
+            email: f.email,
+            products: f.products,
+            _count: f._count
+        }));
+
+        res.json(formattedFarmers);
+    } catch (error) {
+        console.error('Get Farmers Error:', error);
+        res.status(500).json({ detail: 'Internal server error' });
+    }
+});
+
 // Create a product (Optional, for future use)
 router.post('/products', async (req, res) => {
     // Needs authentication middleware to get farmer ID
