@@ -1,12 +1,14 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Leaf, User as UserIcon, LogOut, ShoppingCart, MessageSquare } from 'lucide-react';
+import { Leaf, User as UserIcon, LogOut, ShoppingCart, MessageSquare, Sun, Moon } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import { useTheme } from '../context/ThemeContext';
 
 export default function Navbar() {
     const { user, isAuthenticated, logout } = useAuth();
     const { cart } = useCart();
+    const { theme, toggleTheme } = useTheme();
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -50,6 +52,13 @@ export default function Navbar() {
                 </div>
 
                 <div className="flex items-center gap-4">
+                    <button
+                        onClick={toggleTheme}
+                        className="p-2 text-gray-300 hover:text-white transition-colors rounded-full hover:bg-white/10"
+                        title="Toggle Theme"
+                    >
+                        {theme === 'dark' ? <Sun className="h-5 w-5 text-yellow-400" /> : <Moon className="h-5 w-5" />}
+                    </button>
                     <Link to="/chat" className="p-2 text-gray-300 hover:text-white transition-colors" title="Messages">
                         <MessageSquare className="h-5 w-5" />
                     </Link>
