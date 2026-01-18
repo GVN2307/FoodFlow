@@ -71,20 +71,24 @@ npm install
 
 ## ▶️ Phase 3: Running the App
 
-Every time you want to use FoodFlow, just do this:
+### Option A: The Easy Way (One-Click) ⚡
+1.  Look for the file named **`start_app.bat`** in the main folder.
+2.  Double-click it.
+3.  It will automatically open two black windows and start everything for you!
 
-### 1. Start the Backend (Brain)
-In your **first** terminal (the `backend` one), type:
-```bash
-node index.js
-```
-*It should say: "Server is running on port 8001"*
+### Option B: The Manual Way
+If the script doesn't work, do this manually:
 
-### 2. Start the Frontend (Screen)
-In your **second** terminal (the `frontend` one), type:
-```bash
-npm run dev
-```
+1.  **Start Backend** (Terminal 1):
+    ```bash
+    cd backend
+    npm start
+    ```
+2.  **Start Frontend** (Terminal 2):
+    ```bash
+    cd frontend
+    npm run dev
+    ```
 *It will say something like: `Local: http://localhost:5173/`*
 
 ### 3. Open in Browser
