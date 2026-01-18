@@ -39,8 +39,9 @@ const Farmers = () => {
                         {farmers.map((farmer) => (
                             <div key={farmer.id} className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 border border-gray-100 p-6">
                                 <div className="flex items-center gap-4 mb-4">
-                                    <div className="h-16 w-16 bg-green-100 rounded-full flex items-center justify-center text-green-600">
+                                    <div className="h-16 w-16 bg-green-100 rounded-full flex items-center justify-center text-green-600 relative">
                                         <User size={32} />
+                                        <div className="absolute bottom-0 right-0 h-4 w-4 bg-green-500 border-2 border-white rounded-full"></div>
                                     </div>
                                     <div>
                                         <h3 className="text-xl font-bold text-gray-900">{farmer.fullName}</h3>
@@ -48,6 +49,7 @@ const Farmers = () => {
                                             <MapPin size={14} />
                                             <span>Telangana, India</span>
                                         </div>
+                                        <p className="text-xs text-green-600 font-medium mt-1">Active Now</p>
                                     </div>
                                 </div>
 
