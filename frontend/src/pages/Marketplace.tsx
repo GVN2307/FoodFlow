@@ -4,6 +4,8 @@ import axios from 'axios';
 import { Plus, MessageSquare } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
+import { getApiUrl } from '../config';
+
 const Marketplace = () => {
     const [products, setProducts] = useState<any[]>([]);
     const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
@@ -15,8 +17,8 @@ const Marketplace = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                // In a real app, use an axios instance from context or lib
-                const res = await axios.get('http://localhost:8001/marketplace/products');
+                // Use dynamic URL
+                const res = await axios.get(getApiUrl('/marketplace/products'));
                 setProducts(res.data);
                 setFilteredProducts(res.data);
             } catch (error) {

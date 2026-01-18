@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { ShoppingBag, Heart, MapPin, Search } from 'lucide-react';
 
+import { getApiUrl } from '../config';
+
 export default function CitizenDashboard() {
     const { user } = useAuth();
     const navigate = useNavigate();
@@ -16,7 +18,7 @@ export default function CitizenDashboard() {
             try {
                 // Fetch all products and simulate "Featured" by taking top 4
                 // In a real app, you might have a ?featured=true query param
-                const res = await axios.get('http://localhost:8001/marketplace/products');
+                const res = await axios.get(getApiUrl('/marketplace/products'));
                 setFeaturedProducts(res.data.slice(0, 4));
             } catch (error) {
                 console.error("Failed to fetch featured products", error);

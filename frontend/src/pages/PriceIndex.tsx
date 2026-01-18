@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { TrendingUp, TrendingDown, Minus, DollarSign } from 'lucide-react';
 
+import { getApiUrl } from '../config';
+
 const PriceIndex = () => {
     const [prices, setPrices] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [lastUpdated, setLastUpdated] = useState<string>('');
 
     const fetchPrices = () => {
-        axios.get('http://localhost:8001/prices')
+        axios.get(getApiUrl('/prices'))
             .then(res => {
                 setPrices(res.data);
                 if (res.data.length > 0) setLastUpdated(res.data[0].lastUpdated);

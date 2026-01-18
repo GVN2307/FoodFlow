@@ -3,6 +3,8 @@ import axios from 'axios';
 import { User, MessageSquare, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+import { getApiUrl } from '../config';
+
 const Farmers = () => {
     const [farmers, setFarmers] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -11,7 +13,7 @@ const Farmers = () => {
         const fetchFarmers = async () => {
             try {
                 // Fetch from new endpoint
-                const res = await axios.get('http://localhost:8001/marketplace/farmers');
+                const res = await axios.get(getApiUrl('/marketplace/farmers'));
                 setFarmers(res.data);
             } catch (error) {
                 console.error("Failed to fetch farmers", error);
