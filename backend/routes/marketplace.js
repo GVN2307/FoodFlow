@@ -35,6 +35,7 @@ router.get('/products', async (req, res) => {
             price_per_kg: p.pricePerKg, // Map camelCase DB to snake_case Frontend
             available_quantity: p.availableQuantity, // Map camelCase DB to snake_case Frontend
             image_url: p.imageUrl, // Map camelCase DB to snake_case Frontend
+            category: p.category,
             is_organic: p.isOrganic,
             farmer: {
                 full_name: p.farmer.fullName
