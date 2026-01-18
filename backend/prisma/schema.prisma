@@ -49,6 +49,7 @@ model Product {
   pricePerKg        Float?
   availableQuantity Float?
   imageUrl          String?
+  category          String   @default("Crop") // "Crop", "Pesticide", "Input"
   isOrganic         Boolean  @default(false)
   createdAt         DateTime @default(now())
 

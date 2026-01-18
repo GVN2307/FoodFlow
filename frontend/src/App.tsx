@@ -17,6 +17,8 @@ import Farmers from './pages/Farmers';
 import Cart from './pages/Cart';
 import { CartProvider } from './context/CartContext';
 
+import PriceIndex from './pages/PriceIndex';
+
 function App() {
   return (
     <AuthProvider>
@@ -32,6 +34,7 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/marketplace" element={<Marketplace />} />
                 <Route path="/farmers" element={<Farmers />} />
+                <Route path="/prices" element={<PriceIndex />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/chat" element={<Chat />} />
                 <Route path="/policies" element={<Policies />} />

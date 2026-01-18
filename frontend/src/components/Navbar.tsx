@@ -34,6 +34,9 @@ export default function Navbar() {
                     <Link to="/farmers" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
                         Farmers
                     </Link>
+                    <Link to="/prices" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
+                        Prices
+                    </Link>
                     {user?.role === 'farmer' && (
                         <>
                             <Link to="/policies" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">

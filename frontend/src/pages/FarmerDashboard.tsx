@@ -16,6 +16,32 @@ export default function Dashboard() {
         alerts: [] as any[]
     });
 
+    // Location & Soil State
+    const [location, setLocation] = React.useState<any>(null);
+    const [soilData, setSoilData] = React.useState<any>(null);
+
+    const handleEnableLocation = () => {
+        // Mocking Geolocation and Soil Analysis
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(() => {
+                setLocation({ lat: 17.3850, lng: 78.4867, name: "Hyderabad, Telangana" });
+                setSoilData({
+                    type: "Red Sandy Loam",
+                    ph: "6.5 - 7.5",
+                    suitable: ["Groundnut", "Cotton", "Millets"]
+                });
+            }, () => {
+                // Fallback if denied or error
+                setLocation({ lat: 17.3850, lng: 78.4867, name: "Hyderabad, Telangana (Default)" });
+                setSoilData({
+                    type: "Red Sandy Loam",
+                    ph: "6.5 - 7.5",
+                    suitable: ["Groundnut", "Cotton", "Millets"]
+                });
+            });
+        }
+    };
+
     React.useEffect(() => {
         const fetchStats = async () => {
             try {
@@ -41,7 +67,34 @@ export default function Dashboard() {
             </header>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <WeatherWidget />
+                <div className="flex flex-col gap-4">
+                    <WeatherWidget />
+
+                    {/* Soil Health Card */}
+                    <div className="bg-white dark:bg-zinc-900 p-4 rounded-xl shadow-lg border border-gray-100 dark:border-zinc-800">
+                        <div className="flex justify-between items-center mb-2">
+                            <h4 className="font-semibold text-gray-900 dark:text-white text-sm">Soil Profile</h4>
+                            {!location && (
+                                <button onClick={handleEnableLocation} className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full hover:bg-green-200">
+                                    Enable GPS
+                                </button>
+                            )}
+                        </div>
+                        {location ? (
+                            <div className="text-sm">
+                                <p className="font-bold text-green-600">{soilData.type}</p>
+                                <p className="text-gray-500 text-xs">pH: {soilData.ph}</p>
+                                <div className="mt-1 flex flex-wrap gap-1">
+                                    {soilData.suitable.map((c: string) => (
+                                        <span key={c} className="text-[10px] bg-amber-50 text-amber-800 px-1 rounded border border-amber-100">{c}</span>
+                                    ))}
+                                </div>
+                            </div>
+                        ) : (
+                            <p className="text-xs text-gray-400 italic">Enable GPS to see soil analysis.</p>
+                        )}
+                    </div>
+                </div>
 
                 <div className="bg-white dark:bg-zinc-900 p-6 rounded-xl shadow-lg border border-gray-100 dark:border-zinc-800">
                     <div className="flex items-center gap-4 mb-4">
