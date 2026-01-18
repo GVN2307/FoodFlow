@@ -15,6 +15,7 @@ const dashboardRoutes = require('./routes/dashboard');
 const aiRoutes = require('./routes/ai');
 const policiesRoutes = require('./routes/policies');
 const chatRoutes = require('./routes/chat');
+const priceRoutes = require('./routes/prices');
 
 // Routes
 app.use('/auth', authRoutes);
@@ -23,6 +24,7 @@ app.use('/dashboard', dashboardRoutes);
 app.use('/ai', aiRoutes);
 app.use('/policies', policiesRoutes);
 app.use('/chat', chatRoutes);
+app.use('/prices', priceRoutes);
 
 app.get('/', (req, res) => {
     res.send('FoodFlow Protocol API (Node.js) is running');
