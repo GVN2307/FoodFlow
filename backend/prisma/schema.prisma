@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  fullName  String
+  role      String   @default("citizen") // "farmer", "citizen", "admin"
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  products Product[]
+  crops    Crop[]
+  sentMessages     Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+}
+
+model Crop {
+  id                  Int       @id @default(autoincrement())
+  farmerId            Int
+  name                String
+  variety             String
+  plantingDate        DateTime?
+  expectedHarvestDate DateTime?
+  status              String?   // planted, growing, harvested
+  locationLat         Float?
+  locationLon         Float?
+  imageUrl            String?
+  
+  farmer              User      @relation(fields: [farmerId], references: [id])
+  analysisLogs        AnalysisLog[]
+}
+
+model Product {
+  id                Int      @id @default(autoincrement())
+  farmerId          Int
+  name              String
+  description       String?
+  pricePerKg        Float?
+  availableQuantity Float?
+  imageUrl          String?
+  isOrganic         Boolean  @default(false)
+  createdAt         DateTime @default(now())
+
+  farmer            User     @relation(fields: [farmerId], references: [id])
+}
+
+model AnalysisLog {
+  id             Int      @id @default(autoincrement())
+  cropId         Int
+  imageUrl       String?
+  aiDiagnosis    String?
+  recommendation String?
+  createdAt      DateTime @default(now())
+
+  crop           Crop     @relation(fields: [cropId], references: [id])
+}
+
+model Message {
+  id         Int      @id @default(autoincrement())
+  senderId   Int
+  receiverId Int
+  content    String
+  isRead     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+}
