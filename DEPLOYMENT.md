@@ -17,8 +17,8 @@ Since this is a Hackathon project, we will use free services to host it easily.
 3.  **Configure Settings**:
     *   **Name**: `foodflow-backend` (or unique name).
     *   **Root Directory**: `backend` (Important!).
-    *   **Build Command**: `npm install && npx prisma generate`
-    *   **Start Command**: `node index.js`
+    *   **Build Command**: `npm install && npm run build`
+    *   **Start Command**: `npm start`
 4.  **Environment Variables**:
     *   Click "Advanced" or "Environment".
     *   Add Key: `DATABASE_URL` | Value: `file:./prod.db` (Just to be safe).
