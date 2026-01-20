@@ -8,7 +8,7 @@ Welcome to **FoodFlow Protocol**! This is a complete software platform that help
 
 ## 🛠️ Phase 1: Preparation (Do this once)
 
-Before we start, your computer needs two free tools to run this software: **Node.js** and **Git**.
+Before we start, your computer needs two free tools to run this software: **Node.js** and **Git** make sure to install them.
 
 ### Step 1: Install Node.js
 1.  Go to this website: [https://nodejs.org/](https://nodejs.org/)
