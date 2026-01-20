@@ -7,6 +7,16 @@ if not exist "backend\.env" (
     copy "backend\.env.example" "backend\.env" >nul
 )
 
+:: Auto-setup Database if missing
+if not exist "backend\prisma\dev.db" (
+    echo [INFO] Database not found. Initializing...
+    cd backend
+    call npm install
+    call npx prisma migrate dev --name init
+    call node prisma/seed.js
+    cd ..
+)
+
 :: Start Backend
 start "FoodFlow Backend" cmd /k "cd backend && npm start"
 
