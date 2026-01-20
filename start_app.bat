@@ -1,6 +1,12 @@
 @echo off
 echo Starting FoodFlow Protocol...
 
+:: Auto-setup .env if missing
+if not exist "backend\.env" (
+    echo [INFO] .env not found. Creating default configuration...
+    copy "backend\.env.example" "backend\.env" >nul
+)
+
 :: Start Backend
 start "FoodFlow Backend" cmd /k "cd backend && npm start"
 

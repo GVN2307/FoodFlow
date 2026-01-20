@@ -6,6 +6,11 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 8001;
 
+if (!process.env.JWT_SECRET) {
+    console.warn("⚠️ WARNING: JWT_SECRET is not defined. Using default insecure key.");
+    process.env.JWT_SECRET = "default_fallback_secret";
+}
+
 // Middleware
 app.use(cors());
 app.use(express.json());
