@@ -72,9 +72,15 @@ npm install
 ## ▶️ Phase 3: Running the App
 
 ### Option A: The Easy Way (One-Click) ⚡
-1.  Look for the file named **`start_app.bat`** in the main folder.
-2.  Double-click it.
-3.  It will automatically open two black windows and start everything for you!
+
+**For Windows:**
+1.  Double-click **`start_app.bat`**.
+
+**For Mac / Linux / WSL:**
+1.  Open Terminal in the folder.
+2.  Run: `sh start_app.sh`
+
+It will automatically open everything for you!
 
 ### Option B: The Manual Way
 If the script doesn't work, do this manually:
@@ -82,20 +88,40 @@ If the script doesn't work, do this manually:
 1.  **Start Backend** (Terminal 1):
     ```bash
     cd backend
+    npm install  # (Only if you see "Module not found" errors)
+    npx prisma generate # (Fixes prisma client issues)
     npm start
     ```
 2.  **Start Frontend** (Terminal 2):
     ```bash
     cd frontend
+    npm install # (Only if first time)
     npm run dev
     ```
 *It will say something like: `Local: http://localhost:5173/`*
 
 ### 3. Open in Browser
-*   Hold `Ctrl` and click that link (`http://localhost:5173`).
-*   Or open Chrome/Edge and type `http://localhost:5173`.
+*   Open Chrome/Edge and type `http://localhost:5173`.
 
 **🎉 Congratulations! You are now running FoodFlow Protocol locally!**
+
+---
+
+## 💾 How to Save & Upload Changes (Git)
+To upload your latest changes to GitHub "instantly", verify you have Git installed and run these commands in your main terminal:
+
+**Windows (One-Click):**
+Double-click `upload_changes.bat` (if created) or run:
+```bash
+git add .
+git commit -m "Update code"
+git push
+```
+
+**Mac / Linux:**
+```bash
+sh upload_changes.sh
+```
 
 ---
 
