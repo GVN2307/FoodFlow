@@ -43,7 +43,10 @@ if not exist "backend\prisma\dev.db" (
 )
 
 :: Install Frontend Deps if missing or incomplete
-if not exist "frontend\node_modules\vite\" (
+set REINSTALL_FRONTEND=0
+if not exist "frontend\node_modules\vite\" set REINSTALL_FRONTEND=1
+
+if !REINSTALL_FRONTEND! equ 1 (
     echo [INFO] Frontend dependencies missing or incomplete. Installing...
     pushd frontend
     call npm install
