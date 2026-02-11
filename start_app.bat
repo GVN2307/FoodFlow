@@ -1,74 +1,86 @@
 @echo off
-setlocal enabledelayedexpansion
+SETLOCAL EnableDelayedExpansion
 
-echo ========================================
-echo   FoodFlow Protocol - One-Click Start   
-echo ========================================
+title FoodFlow Protocol - Automated Setup
 
-:: Check for Node.js
+:: Get the directory where the script is located
+SET "ROOT_DIR=%~dp0"
+CD /D "%ROOT_DIR%"
+
+echo.
+echo ========================================================
+echo   FoodFlow Protocol: One-Click Launch ^& Repair
+echo ========================================================
+echo.
+
+:: 1. Check Node.js
+echo [INFO] Checking environment...
 node -v >nul 2>&1
 if %errorlevel% neq 0 (
-    echo [ERROR] Node.js is not installed. Please install it from https://nodejs.org/
+    echo [ERROR] Node.js not found! 
+    echo Please install it from: https://nodejs.org/
     pause
     exit /b
 )
 
-:: Auto-setup .env if missing
+:: 2. Setup Backend Environment
+echo [1/3] Preparing Backend (the brain)...
 if not exist "backend\.env" (
-    echo [INFO] .env not found. Creating default configuration...
-    copy "backend\.env.example" "backend\.env" >nul
+    if exist "backend\.env.example" (
+        copy "backend\.env.example" "backend\.env" >nul
+        echo     - Created .env file for you.
+    ) else (
+        echo DATABASE_URL="file:./dev.db" > "backend\.env"
+        echo JWT_SECRET="dev_secret_keys_FoodFlow" >> "backend\.env"
+        echo     - Created default configuration.
+    )
 )
 
-:: Install Backend Deps if missing or incomplete
-set REINSTALL_BACKEND=0
-if not exist "backend\node_modules\prisma\" set REINSTALL_BACKEND=1
-if not exist "backend\node_modules\express\" set REINSTALL_BACKEND=1
+:: Use pushd for reliable directory switching
+pushd backend
 
-if !REINSTALL_BACKEND! equ 1 (
-    echo [INFO] Backend dependencies missing or incomplete. Installing...
-    pushd backend
-    call npm install
-    popd
+:: Check if core modules are actually functional
+if not exist "node_modules\express\package.json" (
+    echo     - Backend modules missing or broken. Running repair...
+    call npm install --no-audit --no-fund
 )
 
-:: Auto-setup Database if missing or migration needed
-if not exist "backend\prisma\dev.db" (
-    echo [INFO] Database not found. Initializing...
-    pushd backend
-    call npm run build
-    call npx prisma migrate dev --name init
-    call npm run seed
-    popd
-) else (
-    echo [INFO] Existing database found.
-    pushd backend
-    call npm run build
-    popd
+echo     - Syncing Database...
+call npx prisma generate >nul 2>&1
+
+if not exist "prisma\dev.db" (
+    echo     - Database not found. Building initial data...
+    call npx prisma migrate dev --name init --skip-generate
+    call node prisma/seed.js
 )
+popd
 
-:: Install Frontend Deps if missing or incomplete
-set REINSTALL_FRONTEND=0
-if not exist "frontend\node_modules\vite\" set REINSTALL_FRONTEND=1
-
-if !REINSTALL_FRONTEND! equ 1 (
-    echo [INFO] Frontend dependencies missing or incomplete. Installing...
-    pushd frontend
-    call npm install
-    popd
+:: 3. Frontend Dependencies
+echo [2/3] Preparing Frontend (the interface)...
+pushd frontend
+if not exist "node_modules\vite\package.json" (
+    echo     - Frontend modules missing or broken. Running repair...
+    call npm install --no-audit --no-fund
 )
+popd
 
-echo [SUCCESS] Everything is ready. Starting servers...
-
-:: Start Backend
-start "FoodFlow Backend" cmd /k "cd backend && npm start"
-
-:: Start Frontend
-start "FoodFlow Frontend" cmd /k "cd frontend && npm run dev"
-
+:: 4. Launching
+echo [3/3] Starting servers...
 echo.
-echo ========================================================
-echo   Backend and Frontend are launching...
-echo   Please wait for the link to appear in the windows.
-echo ========================================================
-pause
+echo [SUCCESS] App is launching in two separate windows!
+echo.
+echo  - Frontend: http://localhost:5173
+echo  - Backend:  http://localhost:8001
+echo.
+echo  - TIP: Keep those windows open while using the app.
+echo        To stop the app, just close this window or the others.
+echo.
 
+:: Use start /D to launch with correct working directory
+start "FoodFlow Backend API" /D "%ROOT_DIR%backend" cmd /C "npm start"
+start "FoodFlow Frontend Web" /D "%ROOT_DIR%frontend" cmd /C "npm run dev"
+
+echo ========================================================
+echo   Launch Complete. Press any key to close this window.
+echo ========================================================
+pause >nul
