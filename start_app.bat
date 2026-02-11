@@ -19,8 +19,12 @@ if not exist "backend\.env" (
     copy "backend\.env.example" "backend\.env" >nul
 )
 
-:: Install Backend Deps if missing
-if not exist "backend\node_modules\prisma\" (
+:: Install Backend Deps if missing or incomplete
+set REINSTALL_BACKEND=0
+if not exist "backend\node_modules\prisma\" set REINSTALL_BACKEND=1
+if not exist "backend\node_modules\express\" set REINSTALL_BACKEND=1
+
+if !REINSTALL_BACKEND! equ 1 (
     echo [INFO] Backend dependencies missing or incomplete. Installing...
     pushd backend
     call npm install
