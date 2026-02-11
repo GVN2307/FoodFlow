@@ -20,28 +20,34 @@ if not exist "backend\.env" (
 )
 
 :: Install Backend Deps if missing
-if not exist "backend\node_modules\" (
-    echo [INFO] Backend dependencies missing. Installing...
-    cd backend && call npm install && cd ..
+if not exist "backend\node_modules\prisma\" (
+    echo [INFO] Backend dependencies missing or incomplete. Installing...
+    pushd backend
+    call npm install
+    popd
 )
 
 :: Auto-setup Database if missing or migration needed
 if not exist "backend\prisma\dev.db" (
     echo [INFO] Database not found. Initializing...
-    cd backend
-    call npx prisma generate
+    pushd backend
+    call npm run build
     call npx prisma migrate dev --name init
-    call node prisma/seed.js
-    cd ..
+    call npm run seed
+    popd
 ) else (
     echo [INFO] Existing database found.
-    cd backend && call npx prisma generate && cd ..
+    pushd backend
+    call npm run build
+    popd
 )
 
 :: Install Frontend Deps if missing
 if not exist "frontend\node_modules\" (
     echo [INFO] Frontend dependencies missing. Installing...
-    cd frontend && call npm install && cd ..
+    pushd frontend
+    call npm install
+    popd
 )
 
 echo [SUCCESS] Everything is ready. Starting servers...
