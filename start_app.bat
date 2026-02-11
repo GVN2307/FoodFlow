@@ -42,9 +42,9 @@ if not exist "backend\prisma\dev.db" (
     popd
 )
 
-:: Install Frontend Deps if missing
-if not exist "frontend\node_modules\" (
-    echo [INFO] Frontend dependencies missing. Installing...
+:: Install Frontend Deps if missing or incomplete
+if not exist "frontend\node_modules\vite\" (
+    echo [INFO] Frontend dependencies missing or incomplete. Installing...
     pushd frontend
     call npm install
     popd
