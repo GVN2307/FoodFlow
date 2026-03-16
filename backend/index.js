@@ -1,19 +1,16 @@
 const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./routes/auth');
+const otpRoutes = require('./routes/otp');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 8001;
 
-if (!process.env.JWT_SECRET) {
-    console.warn("⚠️ WARNING: JWT_SECRET is not defined. Using default insecure key.");
-    process.env.JWT_SECRET = "default_fallback_secret";
-}
-
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const marketplaceRoutes = require('./routes/marketplace');
 const dashboardRoutes = require('./routes/dashboard');
@@ -24,6 +21,7 @@ const priceRoutes = require('./routes/prices');
 
 // Routes
 app.use('/auth', authRoutes);
+app.use('/auth/otp', otpRoutes);
 app.use('/marketplace', marketplaceRoutes);
 app.use('/dashboard', dashboardRoutes);
 app.use('/ai', aiRoutes);

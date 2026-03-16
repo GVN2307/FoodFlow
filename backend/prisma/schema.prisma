@@ -13,8 +13,9 @@ datasource db {
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
-  password  String
-  fullName  String
+  password  String?
+  fullName  String?
+  phone     String?  @unique
   role      String   @default("citizen") // "farmer", "citizen", "admin"
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
@@ -23,6 +24,7 @@ model User {
   crops    Crop[]
   sentMessages     Message[] @relation("SentMessages")
   receivedMessages Message[] @relation("ReceivedMessages")
+  orders           Order[]
 }
 
 model Crop {
@@ -54,7 +56,9 @@ model Product {
   createdAt         DateTime @default(now())
 
   farmer            User     @relation(fields: [farmerId], references: [id])
+  OrderItems        OrderItem[]
 }
+
 
 model AnalysisLog {
   id             Int      @id @default(autoincrement())
@@ -77,4 +81,35 @@ model Message {
 
   sender     User     @relation("SentMessages", fields: [senderId], references: [id])
   receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+}
+
+model Order {
+  id        Int         @id @default(autoincrement())
+  userId    Int
+  total     Float
+  status    String      @default("PENDING") // PENDING, COMPLETED, CANCELLED
+  createdAt DateTime    @default(now())
+  
+  user      User        @relation(fields: [userId], references: [id])
+  items     OrderItem[]
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  quantity  Int
+  price     Float   // Price at time of purchase
+  
+  order     Order   @relation(fields: [orderId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model OtpCode {
+  id        Int      @id @default(autoincrement())
+  phone     String
+  code      String
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
 }
