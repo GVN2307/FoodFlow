@@ -14,6 +14,7 @@ interface AuthContextType {
     isLoading: boolean;
     login: (email: string, password: string) => Promise<void>;
     signup: (email: string, password: string, fullName: string, role: string) => Promise<void>;
+    handleOtpLoginSuccess: (data: any) => void;
     logout: () => void;
 }
 
@@ -90,8 +91,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(null);
     };
 
+    const handleOtpLoginSuccess = (data: any) => {
+        const { access_token, user: userData } = data;
+
+        localStorage.setItem('token', access_token);
+        setToken(access_token);
+
+        setUser({
+            email: userData.id.toString(), // For OTP users, we use ID as email if no real email
+            full_name: userData.name,
+            role: userData.role
+        });
+
+        // Window location reload or redirect can be handled by the component, 
+        // but setting token should trigger re-render of authenticated routes.
+        window.location.href = '/';
+    };
+
     return (
-        <AuthContext.Provider value={{ user, token, isAuthenticated: !!token, isLoading, login, signup, logout }}>
+        <AuthContext.Provider value={{ user, token, isAuthenticated: !!token, isLoading, login, signup, handleOtpLoginSuccess, logout }}>
             {children}
         </AuthContext.Provider>
     );

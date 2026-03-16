@@ -4,8 +4,10 @@ import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Mail, Lock, Loader2, ArrowRight } from 'lucide-react';
 import heroImage from '../assets/images/hero-farm.png';
+import PhoneLogin from '../components/auth/PhoneLogin';
 
 export default function Login() {
+    const [loginMethod, setLoginMethod] = useState<'email' | 'phone'>('email');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -54,64 +56,92 @@ export default function Login() {
                         <p className="text-gray-400 mt-2">Sign in to access your dashboard</p>
                     </div>
 
-                    {error && (
-                        <div className="bg-red-500/10 border border-red-500/50 text-red-500 text-sm p-3 rounded-lg mb-6">
-                            {error}
-                        </div>
-                    )}
-
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-300">Email Address</label>
-                            <div className="relative">
-                                <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
-                                <input
-                                    type="email"
-                                    required
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full bg-zinc-800/50 border border-zinc-700 text-white rounded-lg pl-10 pr-4 py-2.5 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none"
-                                    placeholder="farmer@example.com"
-                                />
+                    {loginMethod === 'phone' ? (
+                        <PhoneLogin onBack={() => setLoginMethod('email')} />
+                    ) : (
+                        <>
+                            {/* Toggle login method */}
+                            <div className="flex bg-zinc-800/80 p-1 rounded-lg mb-8">
+                                <button
+                                    onClick={() => setLoginMethod('email')}
+                                    className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${loginMethod === 'email'
+                                        ? 'bg-zinc-700 text-white shadow-sm'
+                                        : 'text-gray-400 hover:text-white'
+                                        }`}
+                                >
+                                    Email Login
+                                </button>
+                                <button
+                                    onClick={() => setLoginMethod('phone')}
+                                    className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${loginMethod === 'phone'
+                                        ? 'bg-zinc-700 text-white shadow-sm'
+                                        : 'text-gray-400 hover:text-white'
+                                        }`}
+                                >
+                                    Mobile Login
+                                </button>
                             </div>
-                        </div>
 
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-300">Password</label>
-                            <div className="relative">
-                                <Lock className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
-                                <input
-                                    type="password"
-                                    required
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full bg-zinc-800/50 border border-zinc-700 text-white rounded-lg pl-10 pr-4 py-2.5 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none"
-                                    placeholder="••••••••"
-                                />
-                            </div>
-                        </div>
-
-                        <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            {isSubmitting ? (
-                                <Loader2 className="h-5 w-5 animate-spin" />
-                            ) : (
-                                <>
-                                    Sign In <ArrowRight className="h-5 w-5" />
-                                </>
+                            {error && (
+                                <div className="bg-red-500/10 border border-red-500/50 text-red-500 text-sm p-3 rounded-lg mb-6">
+                                    {error}
+                                </div>
                             )}
-                        </button>
-                    </form>
 
-                    <div className="mt-6 text-center text-sm text-gray-400">
-                        Don't have an account?{' '}
-                        <Link to="/register" className="text-emerald-500 hover:text-emerald-400 font-medium">
-                            Create one
-                        </Link>
-                    </div>
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-gray-300">Email Address</label>
+                                    <div className="relative">
+                                        <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
+                                        <input
+                                            type="email"
+                                            required
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            className="w-full bg-zinc-800/50 border border-zinc-700 text-white rounded-lg pl-10 pr-4 py-2.5 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none"
+                                            placeholder="farmer@example.com"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-gray-300">Password</label>
+                                    <div className="relative">
+                                        <Lock className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
+                                        <input
+                                            type="password"
+                                            required
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            className="w-full bg-zinc-800/50 border border-zinc-700 text-white rounded-lg pl-10 pr-4 py-2.5 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none"
+                                            placeholder="••••••••"
+                                        />
+                                    </div>
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {isSubmitting ? (
+                                        <Loader2 className="h-5 w-5 animate-spin" />
+                                    ) : (
+                                        <>
+                                            Sign In <ArrowRight className="h-5 w-5" />
+                                        </>
+                                    )}
+                                </button>
+                            </form>
+
+                            <div className="mt-6 text-center text-sm text-gray-400">
+                                Don't have an account?{' '}
+                                <Link to="/register" className="text-emerald-500 hover:text-emerald-400 font-medium">
+                                    Create one
+                                </Link>
+                            </div>
+                        </>
+                    )}
                 </motion.div>
             </div>
         </div>
